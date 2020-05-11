@@ -18,6 +18,8 @@ float_type = tf.float64
 jitter_level = 1e-5
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+df = pd.read_pickle('HeartSteps.pkl')
+
 
 def onoff(Xtrain,Ytrain,Xtest,Ytest,dir):
     tf.reset_default_graph()
