@@ -2,8 +2,10 @@ from __future__ import absolute_import
 import tensorflow as tf
 import numpy as np
 import pickle
-from gpflow.param import Param
-from gpflow.model import Model
+# from gpflow.param import Param
+# from gpflow.model import Model
+from gpflow import Parameter as Param
+from gpflow import models as Model
 from gpflow.mean_functions import Zero
 from gpflow import transforms, conditionals, kullback_leiblers
 from gpflow.param import AutoFlow, DataHolder
