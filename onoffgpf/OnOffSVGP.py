@@ -7,15 +7,15 @@ import pickle
 from gpflow import Parameter as Param
 from gpflow import models as Model
 from gpflow.mean_functions import Zero
-from gpflow import transforms, conditionals, kullback_leiblers
-from gpflow.param import AutoFlow, DataHolder
-from gpflow._settings import settings
-from gpflow.minibatch import MinibatchData
+# from gpflow import transforms, conditionals, kullback_leiblers
+# from gpflow.param import AutoFlow, DataHolder
+# from gpflow._settings import settings
+# from gpflow.minibatch import MinibatchData
 from math import pi
 import time
 
-float_type = settings.dtypes.float_type
-np_float_type = np.float32 if float_type is tf.float32 else np.float64
+# float_type = settings.dtypes.float_type
+# np_float_type = np.float32 if float_type is tf.float32 else np.float64
 
 class OnOffSVGP(Model):
     """
@@ -159,11 +159,11 @@ class OnOffSVGP(Model):
         else:
             pickle.dump(self,open(fname, "wb"))
 
-    @AutoFlow((float_type, [None, None]))
+    # @AutoFlow((float_type, [None, None]))
     def predict_onoffgp(self, Xnew):
         return self.build_predict(Xnew)
 
-    @AutoFlow()
+    # @AutoFlow()
     def compute_prior_KL(self):
         return self.build_prior_KL()
 
