@@ -1,4 +1,6 @@
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import gpflow as gpf
 from onoffgpf import OnOffSVGP, OnOffLikelihood
 from onoffgpf.PlotOnOff1D import PlotOnOff1D
