@@ -118,8 +118,54 @@ optimizer.minimize(
 )  # Note: this does a single step
 # In practice, you will need to call minimize() many times, this will be further discussed below.
 
+# scipy does the full optimization on a single call to
+# minimize()
 optimizer = gpflow.optimizers.Scipy()
 optimizer.minimize(
     vgp_model.training_loss, vgp_model.trainable_variables, options=dict(maxiter=ci_niter(1000))
 )
+
+vgp_model.training_loss_closure()  # compiled
+vgp_model.training_loss_closure(compile=True)  # compiled
+vgp_model.training_loss_closure(compile=False)  # uncompiled, same as vgp_model.training_loss
+
+assert isinstance(model, gpflow.models.SVGP)
+model.training_loss(data)
+
+# optimizing has a training loss closure that takes the
+# data and returns a closure that computes the training
+# loss on the data
+optimizer = tf.optimizers.Adam()
+training_loss = model.training_loss_closure(
+    data
+)  # We save the compiled closure in a variable so as not to re-compile it each step
+optimizer.minimize(training_loss, model.trainable_variables)  # Note that this does a single step
+
+batch_size = 5
+batched_dataset = tf.data.Dataset.from_tensor_slices(data).batch(batch_size)
+training_loss = model.training_loss_closure(iter(batched_dataset))
+
+optimizer.minimize(training_loss, model.trainable_variables)  # Note that this does a single step
+
+
+# Training using gradient tapes
+def optimization_step(model: gpflow.models.SVGP, batch: Tuple[tf.Tensor, tf.Tensor]):
+    with tf.GradientTape(watch_accessed_variables=False) as tape:
+        tape.watch(model.trainable_variables)
+        loss = model.training_loss(batch)
+    grads = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+    return loss
+
+def simple_training_loop(model: gpflow.models.SVGP, epochs: int = 1, logging_epoch_freq: int = 10):
+    tf_optimization_step = tf.function(optimization_step)
+
+    batches = iter(train_dataset)
+    for epoch in range(epochs):
+        for _ in range(ci_niter(num_batches_per_epoch)):
+            tf_optimization_step(model, next(batches))
+
+        epoch_id = epoch + 1
+        if epoch_id % logging_epoch_freq == 0:
+            tf.print(f"Epoch {epoch_id}: ELBO (train) {model.elbo(data)}")
 
