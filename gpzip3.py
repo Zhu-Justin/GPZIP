@@ -1,7 +1,5 @@
 import tensorflow as tf
 import gpflow as gpf
-from onoffgpf import OnOffSVGP, OnOffLikelihood
-from onoffgpf.PlotOnOff1D import PlotOnOff1D
 
 import numpy as np
 import scipy.io as sio
@@ -32,6 +30,15 @@ kg.variance = 5.
 Zf = np.delete(np.linspace(min(Xtrain),max(Xtrain),num_inducing,endpoint=False),0).transpose().reshape(-1,1)
 Zg = np.delete(np.linspace(min(Xtrain),max(Xtrain),num_inducing,endpoint=False),0).transpose().reshape(-1,1)
 
-# model definition
+
+# TODO: model definition
+from onoffgpf import OnOffSVGP, OnOffLikelihood
+from onoffgpf.PlotOnOff1D import PlotOnOff1D
 m = OnOffSVGP(Xtrain, Ytrain ,kernf=kf,kerng=kg ,likelihood = OnOffLikelihood() ,Zf = Zf,Zg = Zg)
+m.optimize(maxiter = num_iterations) #,method= tf.train.AdamOptimizer(learning_rate = 0.01)
+m.compute_log_likelihood()
+# model plot
+PlotOnOff1D(m)
+
+
 
