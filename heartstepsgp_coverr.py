@@ -1,3 +1,4 @@
+import pandas as pd
 from scipy import stats
 import numpy as np
 import sys
@@ -9,10 +10,6 @@ import matplotlib.pyplot as plt
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
 np.random.seed(1)
-import pandas as pd
-# import rpy2.robjects as robjects
-# from rpy2.robjects import pandas2ri
-# pandas2ri.activate()
 
 # Helper functions for plotting
 def setcanvas():
@@ -27,41 +24,9 @@ def savecanvas(title='Untitled'):
     plt.savefig(title+'.png')
     return
 
-# loading data from mounted mBox "HeartSteps" folder
-def initsys(sysname):
-    sysvar = dict()
-    if sysname == "Windows":
-        sysvar = {'locale' : 'English', 
-                'mbox':'Z:/HeartSteps/'}
-    elif sysname == "Darwin":
-        sysvar = {'locale' : 'en_US', 
-                'mbox':'/Volumes/dav/HeartSteps/'}
-    elif sysname == "Linux":
-        sysvar = {'locale' : 'en_US.UTF-8', 
-                'mbox':'~/mbox/HeartSteps/'}
-
-    if sysvar:
-        sysvar['mbox.data'] = sysvar['mbox'] + "Tianchen Qian/jbslot_traveldayremoved_90min.RDS"
-    return sysvar
-
-
-sysvar = initsys(platform.system())
-# File must exist!
-assert(sysvar)
-
-locale.setlocale(locale.LC_ALL, sysvar['locale'])
-os.environ['TZ'] = "GMT"
-
-# read from R data
-rdata = pyreadr.read_r(sysvar['mbox.data'])
-# convert to pandas
-df = rdata[None]
-total_T = 90
-# Uncomment to restrict to 30 as opposed to 90
-# total_T = 30
-# df.to_pickle('HeartSteps.pkl')
 df = pd.read_pickle('HeartSteps.pkl')
 
+total_T = 90
 df.columns
 df.avail == True
 df['min.after.decision']
@@ -108,9 +73,10 @@ y = m2.ravel()
 
 # kernel = C(1.0, (1e-3, 1e3)) * RBF(length_scale = [.1, .1], length_scale_bounds=[(1e-2, 1e2),(1e-2, 1e2)]) \ + WhiteKernel(noise_level=1e-5, noise_level_bounds=(1e-10, 1e-4))
 # # Instantiate a Gaussian Process model
-kernel = C(1.0, (1e-3, 1e3)) * RBF(10, (1e-2, 1e2))
-gpr = GaussianProcessRegressor(kernel=kernel)
-gp = GaussianProcessRegressor(kernel=kernel,normalize_y=True)
+gpr = GaussianProcessRegressor()
+gp = GaussianProcessRegressor()
+# kernel = C(1.0, (1e-3, 1e3)) * RBF(10, (1e-2, 1e2))
+# gpr = GaussianProcessRegressor(kernel=kernel)
 # gp = GaussianProcessRegressor(kernel=kernel)
 
 # # # Fit to data using Maximum Likelihood Estimation of the parameters

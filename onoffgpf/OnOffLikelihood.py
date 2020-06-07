@@ -1,13 +1,14 @@
 from __future__ import absolute_import
 import tensorflow as tf
 import numpy as np
-from gpflow.param import Param
-from gpflow import transforms
+# from gpflow.param import Param
+from gpflow import Parameter as Param
+# from gpflow import transforms
 from gpflow.likelihoods import Likelihood
-from gpflow._settings import settings
+# from gpflow._settings import settings
 
-float_type = settings.dtypes.float_type
-np_float_type = np.float32 if float_type is tf.float32 else np.float64
+# float_type = settings.dtypes.float_type
+# np_float_type = np.float32 if float_type is tf.float32 else np.float64
 
 class OnOffLikelihood(Likelihood):
     """

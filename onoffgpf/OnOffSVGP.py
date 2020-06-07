@@ -5,7 +5,9 @@ import pickle
 # from gpflow.param import Param
 # from gpflow.model import Model
 from gpflow import Parameter as Param
-from gpflow import models as Model
+# from gpflow.Module import Module
+from gpflow import Module
+# from gpflow.models import Module
 from gpflow.mean_functions import Zero
 # from gpflow import transforms, conditionals, kullback_leiblers
 # from gpflow.param import AutoFlow, DataHolder
@@ -16,8 +18,8 @@ import time
 
 # float_type = settings.dtypes.float_type
 # np_float_type = np.float32 if float_type is tf.float32 else np.float64
-
-class OnOffSVGP(Model):
+print("Beginning inheritance")
+class OnOffSVGP(Module):
     """
     - X is a data matrix, size N x D
     - Y is a data matrix, size N x 1

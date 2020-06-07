@@ -32,7 +32,7 @@ Zg = np.delete(np.linspace(min(Xtrain),max(Xtrain),num_inducing,endpoint=False),
 
 
 # TODO: model definition
-from onoffgpf import OnOffSVGP2, OnOffLikelihood
+from onoffgpf import OnOffSVGP, OnOffLikelihood
 m = OnOffSVGP(Xtrain, Ytrain ,kernf=kf,kerng=kg ,likelihood = OnOffLikelihood() ,Zf = Zf,Zg = Zg)
 m.optimize(maxiter = num_iterations) #,method= tf.train.AdamOptimizer(learning_rate = 0.01)
 m.compute_log_likelihood()
