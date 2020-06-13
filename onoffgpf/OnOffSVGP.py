@@ -9,6 +9,7 @@ from gpflow import Parameter as Param
 from gpflow import Module
 # from gpflow.models import Module
 from gpflow.mean_functions import Zero
+from gpflow.models.model import GPModel
 # from gpflow import transforms, conditionals, kullback_leiblers
 # from gpflow.param import AutoFlow, DataHolder
 # from gpflow._settings import settings
@@ -19,7 +20,7 @@ import time
 # float_type = settings.dtypes.float_type
 # np_float_type = np.float32 if float_type is tf.float32 else np.float64
 print("Beginning inheritance")
-class OnOffSVGP(Module):
+class OnOffSVGP(GPModel):
     """
     - X is a data matrix, size N x D
     - Y is a data matrix, size N x 1
@@ -29,7 +30,7 @@ class OnOffSVGP(Module):
 
     def __init__(self, X, Y, kernf, kerng, likelihood, Zf, Zg, mean_function=None, minibatch_size=None, 
                  name='model'):
-        Model.__init__(self, name)
+        GPModel.__init__(self, name)
         self.mean_function = mean_function or Zero()
         self.kernf = kernf
         self.kerng = kerng
