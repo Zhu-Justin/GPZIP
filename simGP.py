@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.random as r
 
-def rzip(n=1000, pi=0.5, lam=1):
+def rzip(n=1, pi=0.5, lam=1):
     """
     Simulates n samples from a zero-inflated Poisson
     Returns 0 with pi probability
@@ -13,7 +13,7 @@ def rzip(n=1000, pi=0.5, lam=1):
     return f(x)
 
 
-def rzin(n=1000, pi=0.5, mu=0, sigma=1):
+def rzin(n=1, pi=0.5, mu=0, sigma=1):
     """
     Simulates n samples from a zero-inflated Gaussian (normal)
     Returns 0 with pi probability
