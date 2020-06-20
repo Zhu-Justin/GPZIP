@@ -1,4 +1,51 @@
 from __future__ import absolute_import
+import gpflow
+import tensorflow as tf
+import numpy as np
+import matplotlib as plt
+
+# Creating a GPZIP Process Model Class for HeartSteps
+# For now, this is going to be a linear multiclass
+# classifier
+class GPZIPclass(gpflow.models.BayesianModel, gpflow.models.InternalDataTrainingLossMixin):
+    def __init__(self, X, Y, name=None):
+        super().__init__(name=name)
+        self.X = X.copy() # Contains the covariates and decision point
+        self.Y = Y.copy() # Y is the minute-level step counts
+
+        self.num_data, self.input_dim = X.shape
+        _, self.num_classes = Y.shape
+
+        # Parameters
+        self.W = gpflow.Parameter(np.random.randn(self.input_dim, self.num_classes))
+        self.b = gpflow.Parameter(np.random.rand(self.num_classes))
+
+    def maximum_log_likelihood_objective(self):
+        p = tf.nn.softmax(
+            tf.matmul(self.X, self.W)+self.b
+        )
+        return tf.reduce_sum(tf.math.log(p)*self.Y)
+
+
+# Testing
+np.random.seed(123)
+X = np.vstack(
+    [
+        np.random.randn(10,2)+[2,2],
+        np.random.randn(10,2)+[-2,2],
+        np.random.randn(10,2)+[2,-2],
+    ]
+)
+Y = np.repeat(np.eye(3),10,0)
+import matplotlib.pyplot as plt
+plt.style.use("ggplot")
+# %matplotlib inline #plotting purposes
+plt.rcParams["figure.figsize"] = (12, 6)
+_ = plt.scatter(X[:, 0], X[:, 1], 100, np.argmax(Y,1),lw=2, cmap=plt.cm.viridis)
+
+m = GPZIPclass(X,Y)
+m
+
 import tensorflow as tf
 import numpy as np
 import pickle
@@ -17,6 +64,7 @@ from gpflow.models.model import GPModel
 from math import pi
 import time
 
+
 # float_type = settings.dtypes.float_type
 # np_float_type = np.float32 if float_type is tf.float32 else np.float64
 print("Beginning inheritance")
@@ -26,7 +74,7 @@ class OnOffSVGP(GPModel):
     - Y is a data matrix, size N x 1
     - kernf,kernf are gpflow objects for function & gamma kernels
     - Zf,Zg are matrices of inducing point locations, size Mf x D and Mg x D
-    """
+  m_{n\to\infty}  """
 
     def __init__(self, X, Y, kernf, kerng, likelihood, Zf, Zg, mean_function=None, minibatch_size=None, 
                  name='model'):
