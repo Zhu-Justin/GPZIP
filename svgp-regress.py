@@ -21,8 +21,9 @@ M = 50 # Number of inducing locations
 
 kern = gpflow.kernels.RBF()
 Z = X[:M, :].copy() # Initialise inducing locations to the first M inputs in the dataset
-# m = gpflow.models.SVGP(X, Y, kern, gpflow.likelihoods.Gaussian(), Z)
+m = gpflow.models.SVGP(X, Yp, kern, gpflow.likelihoods.Gaussian(), Z)
 m = gpflow.models.SVGP(kern, gpflow.likelihoods.Gaussian(), Z)
+
 m.maximum_log_likelihood_objective((X,Yp))
 
 # Samples

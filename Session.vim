@@ -12,10 +12,6 @@ set shortmess=aoO
 argglobal
 %argdel
 $argadd gpzip3.py
-set stal=2
-tabnew
-tabnew
-tabrewind
 edit onoffgpf/OnOffSVGP.py
 set splitbelow splitright
 set nosplitbelow
@@ -26,59 +22,23 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-let s:l = 13 - ((0 * winheight(0) + 17) / 35)
+let s:l = 13 - ((0 * winheight(0) + 15) / 31)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 13
 normal! 09|
 lcd ~/Dropbox/Research/GPZIP
-tabnext
-edit ~/Dropbox/Research/GPZIP/simGP.py
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-let s:l = 24 - ((23 * winheight(0) + 17) / 35)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-24
-normal! 0
-lcd ~/Dropbox/Research/GPZIP
-tabnext
-edit ~/Dropbox/Research/GPZIP/svgp-regress.py
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-let s:l = 42 - ((33 * winheight(0) + 17) / 35)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-42
-normal! 0
-lcd ~/Dropbox/Research/GPZIP
-tabnext 3
-set stal=1
-badd +1 ~/Dropbox/Research/GPZIP/simGP.py
+tabnext 1
+badd +1 ~/.zhu_macos/zhuos.sh
 badd +39 ~/Dropbox/Research/GPZIP/gpzip3.py
 badd +0 ~/Dropbox/Research/GPZIP/onoffgpf/OnOffSVGP.py
+badd +19 ~/Dropbox/Research/GPZIP/simGP.py
+badd +22 ~/Dropbox/Research/GPZIP/svgp-regress.py
 badd +1 ~/Dropbox/Research/GPZIP/regression_demo.py
 badd +1 ~/Dropbox/Research/GPZIP/onoffgpf/OnOffLikelihood.py
 badd +21 ~/Dropbox/Research/GPZIP/zero-inflated-gp/onoffgpf/OnOffSVGP.py
 badd +31 ~/Dropbox/Research/GPZIP/zero-inflated-gp/onoffgpf/OnOffLikelihood.py
-badd +43 ~/Dropbox/Research/GPZIP/svgp-regress.py
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif
