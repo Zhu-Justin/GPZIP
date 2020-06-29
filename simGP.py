@@ -5,23 +5,23 @@ def rzip(n=1, pi=0.5, lam=1):
     """
     Simulates n samples from a zero-inflated Poisson
     Returns 0 with pi probability
-    Returns exp(lam) with 1 - pi probability
+    Returns pois(lam) with 1 - pi probability
     """
-    x = np.empty(n)
+    x = np.zeros(n)
     f = np.vectorize(lambda x: 0 if r.uniform() < pi else
-                     r.exponential(lam))
+                     r.poisson(lam))
     return f(x)
 
 
 def rzin(n=1, pi=0.5, mu=0, sigma=1):
     """
-    Simulates n samples from a zero-inflated Gaussian (normal)
+    Simulates n samples from a zero-inflated positive Gaussian (normal)
     Returns 0 with pi probability
-    Returns normal(mu, sigma) with 1 - pi probability
+    Returns abs(normal(mu, sigma)) with 1 - pi probability
     """
-    x = np.empty(n)
+    x = np.zeros(n)
     f = np.vectorize(lambda x: 0 if r.uniform() < pi else
-                     r.normal(mu, sigma))
+                     abs(r.normal(mu, sigma)))
     return f(x)
 
 
