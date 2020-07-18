@@ -1,3 +1,5 @@
+
+
 np.random.seed(1)  # for reproducibility and to make it independent from demo 1
 def generate_data(N=100):
     X = np.random.rand(N)[:, None] * 10 - 5  # Inputs, shape N x 1
